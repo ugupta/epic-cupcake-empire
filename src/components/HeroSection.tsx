@@ -1,17 +1,12 @@
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-cupcakes.jpg";
-
 const HeroSection = () => {
-  return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+  return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(${heroImage})`,
-          filter: 'brightness(0.4)'
-        }}
-      />
+      <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{
+      backgroundImage: `url(${heroImage})`,
+      filter: 'brightness(0.4)'
+    }} />
       
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-cupcake-pink/30 via-transparent to-cupcake-yellow/30" />
@@ -30,28 +25,18 @@ const HeroSection = () => {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button 
-            variant="hero" 
-            size="lg"
-            className="font-fredoka text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-            onClick={() => window.location.href = '/order'}
-          >
+          <Button variant="hero" size="lg" className="font-fredoka text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105" onClick={() => window.location.href = '/order'}>
             Order Custom Cupcakes
           </Button>
           
-          <Button 
-            variant="outline" 
-            size="lg"
-            className="font-fredoka text-lg px-8 py-6 rounded-full bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300"
-            onClick={() => window.location.href = '/orders'}
-          >
+          <Button variant="outline" size="lg" className="font-fredoka text-lg px-8 py-6 rounded-full bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300" onClick={() => window.location.href = '/orders'}>
             View Orders
           </Button>
         </div>
         
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 text-white">
           <div className="text-center">
-            <div className="font-fredoka text-3xl font-bold text-cupcake-yellow">500+</div>
+            <div className="font-fredoka text-3xl font-bold text-cupcake-yellow">500000+</div>
             <div className="font-inter text-white/80">Custom Orders Completed</div>
           </div>
           <div className="text-center">
@@ -64,8 +49,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
