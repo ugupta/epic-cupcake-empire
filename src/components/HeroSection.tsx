@@ -34,6 +34,7 @@ const HeroSection = () => {
             variant="hero" 
             size="lg"
             className="font-fredoka text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            onClick={() => window.location.href = '/order'}
           >
             Order Custom Cupcakes
           </Button>
@@ -42,8 +43,9 @@ const HeroSection = () => {
             variant="outline" 
             size="lg"
             className="font-fredoka text-lg px-8 py-6 rounded-full bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300"
+            onClick={() => window.location.href = '/orders'}
           >
-            View Our Flavors
+            View Orders
           </Button>
         </div>
         
