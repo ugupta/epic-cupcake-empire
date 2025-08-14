@@ -36,7 +36,7 @@ const HeroSection = () => {
         
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 text-white">
           <div className="text-center">
-            <div className="font-fredoka text-3xl font-bold text-cupcake-yellow">500000+</div>
+            <div className="font-fredoka text-3xl font-bold text-cupcake-yellow">500+</div>
             <div className="font-inter text-white/80">Custom Orders Completed</div>
           </div>
           <div className="text-center">
