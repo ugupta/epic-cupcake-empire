@@ -13,7 +13,7 @@ const HeroSection = () => {
       
       {/* Content */}
       <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-        <h1 className="font-fredoka text-4xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+        <h1 className="font-fredoka text-4xl sm:text-6xl font-bold text-white mb-6 leading-tight lg:text-9xl">
           America's <span className="text-cupcake-yellow">Craziest</span>
           <br />
           Cupcake Creators
