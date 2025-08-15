@@ -4,7 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { CalendarDays, Users, MapPin, Phone, Mail, DollarSign, Package } from "lucide-react";
+import { useAuth } from "@/components/auth/AuthProvider";
+import { useNavigate } from "react-router-dom";
+import { CalendarDays, Users, MapPin, Phone, Mail, DollarSign, Package, ArrowLeft } from "lucide-react";
+import { UserMenu } from "@/components/auth/UserMenu";
 
 interface Order {
   id: string;
@@ -27,6 +30,8 @@ export default function OrdersList() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const { profile } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchOrders();
@@ -90,10 +95,27 @@ export default function OrdersList() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-cupcake-cream via-background to-cupcake-pink/20 py-12">
       <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center mb-8">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Home
+          </Button>
+          <UserMenu />
+        </div>
+
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-primary mb-4">Custom Orders</h1>
+          <h1 className="text-4xl font-bold text-primary mb-4">
+            {profile?.role === 'admin' ? 'All Custom Orders' : 'Your Custom Orders'}
+          </h1>
           <p className="text-lg text-muted-foreground">
-            View all submitted custom cupcake orders
+            {profile?.role === 'admin' 
+              ? 'View and manage all submitted custom cupcake orders'
+              : 'View your submitted custom cupcake orders'
+            }
           </p>
         </div>
 
@@ -102,7 +124,18 @@ export default function OrdersList() {
             <CardContent className="text-center py-8">
               <Package className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">No Orders Found</h3>
-              <p className="text-muted-foreground">No custom orders have been submitted yet.</p>
+              <p className="text-muted-foreground mb-4">
+                {profile?.role === 'admin' 
+                  ? 'No custom orders have been submitted yet.'
+                  : 'You haven\'t submitted any custom orders yet.'
+                }
+              </p>
+              <Button 
+                variant="hero" 
+                onClick={() => navigate('/order')}
+              >
+                Submit New Order
+              </Button>
             </CardContent>
           </Card>
         ) : (
@@ -193,7 +226,7 @@ export default function OrdersList() {
           <Button 
             variant="hero" 
             size="lg"
-            onClick={() => window.location.href = '/order'}
+            onClick={() => navigate('/order')}
           >
             Submit New Order
           </Button>

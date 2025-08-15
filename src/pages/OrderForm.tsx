@@ -1,5 +1,11 @@
+
 import OrderForm from "@/components/OrderForm";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
 export default function OrderFormPage() {
-  return <OrderForm />;
+  return (
+    <ProtectedRoute>
+      <OrderForm />
+    </ProtectedRoute>
+  );
 }

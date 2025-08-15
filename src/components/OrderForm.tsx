@@ -10,7 +10,10 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { CalendarDays, Users, MapPin, DollarSign } from "lucide-react";
+import { useAuth } from "@/components/auth/AuthProvider";
+import { CalendarDays, Users, MapPin, DollarSign, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { UserMenu } from "@/components/auth/UserMenu";
 
 const orderSchema = z.object({
   customer_name: z.string().min(2, "Name must be at least 2 characters"),
@@ -51,13 +54,15 @@ const eventTypes = [
 
 export default function OrderForm() {
   const { toast } = useToast();
+  const { user, profile } = useAuth();
+  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<OrderForm>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
-      customer_name: "",
-      customer_email: "",
+      customer_name: profile?.full_name || "",
+      customer_email: profile?.email || "",
       customer_phone: "",
       event_type: "",
       event_date: "",
@@ -70,9 +75,19 @@ export default function OrderForm() {
   });
 
   const onSubmit = async (values: OrderForm) => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "You must be signed in to submit an order.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const orderData = {
+        user_id: user.id,
         customer_name: values.customer_name,
         customer_email: values.customer_email,
         customer_phone: values.customer_phone || null,
@@ -97,6 +112,7 @@ export default function OrderForm() {
       });
 
       form.reset();
+      navigate('/orders');
     } catch (error) {
       console.error('Error submitting order:', error);
       toast({
@@ -112,6 +128,19 @@ export default function OrderForm() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-cupcake-cream via-background to-cupcake-pink/20 py-12">
       <div className="container mx-auto px-4 max-w-4xl">
+        {/* Header with navigation and user menu */}
+        <div className="flex justify-between items-center mb-8">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Home
+          </Button>
+          <UserMenu />
+        </div>
+
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-primary mb-4">Submit Your Custom Order</h1>
           <p className="text-lg text-muted-foreground">
