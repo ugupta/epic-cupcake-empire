@@ -1,70 +1,60 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 
 const flavors = [
   {
     name: "Strawberry Dream",
-    description: "Fresh strawberry cake with cream cheese frosting",
+    description: "Fresh strawberry with cream cheese",
     color: "bg-gradient-to-br from-pink-200 to-pink-300"
   },
   {
     name: "Chocolate Explosion",
-    description: "Rich chocolate cake with fudge center and ganache",
+    description: "Rich chocolate with fudge center",
     color: "bg-gradient-to-br from-amber-800 to-amber-900"
   },
   {
     name: "Vanilla Bean Bliss",
-    description: "Madagascar vanilla cake with buttercream swirls",
+    description: "Madagascar vanilla with buttercream",
     color: "bg-gradient-to-br from-yellow-100 to-yellow-200"
   },
   {
     name: "Red Velvet Royalty",
-    description: "Classic red velvet with signature cream cheese frosting",
+    description: "Classic red velvet with cream cheese",
     color: "bg-gradient-to-br from-red-400 to-red-500"
   },
   {
     name: "Lemon Sunshine",
-    description: "Zesty lemon cake with lemon curd and meringue",
+    description: "Zesty lemon with lemon curd",
     color: "bg-gradient-to-br from-yellow-300 to-yellow-400"
   },
   {
     name: "Funfetti Celebration",
-    description: "Rainbow sprinkle cake with vanilla buttercream",
+    description: "Rainbow sprinkle with vanilla",
     color: "bg-gradient-to-br from-purple-200 via-pink-200 to-yellow-200"
   }
 ];
 
 const FlavorsSection = () => {
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-cupcake-cream">
+    <section className="py-4 px-4 bg-cupcake-cream">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="font-fredoka text-4xl sm:text-5xl font-bold text-foreground mb-4">
+        <div className="text-center mb-3">
+          <h2 className="font-fredoka text-lg font-bold text-foreground mb-1">
             Our Signature <span className="text-primary">Flavors</span>
           </h2>
-          <p className="font-inter text-lg text-muted-foreground max-w-2xl mx-auto">
-            From classic favorites to crazy combinations, we create cupcakes that taste as amazing as they look.
-          </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
           {flavors.map((flavor, index) => (
-            <Card 
-              key={index} 
-              className="group hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2 border-0 overflow-hidden"
-            >
-              <div className={`h-32 ${flavor.color} relative`}>
+            <Card key={index} className="border-0 overflow-hidden">
+              <div className={`h-12 ${flavor.color} relative`}>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                <div className="absolute bottom-4 left-4">
-                  <div className="w-3 h-3 bg-white rounded-full opacity-80"></div>
-                  <div className="w-2 h-2 bg-white rounded-full opacity-60 ml-2 -mt-1"></div>
-                </div>
               </div>
-              
-              <CardContent className="p-6">
-                <h3 className="font-fredoka text-xl font-semibold text-foreground mb-3">
+              <CardContent className="p-2">
+                <h3 className="font-fredoka text-xs font-semibold text-foreground mb-1">
                   {flavor.name}
                 </h3>
-                <p className="font-inter text-muted-foreground leading-relaxed">
+                <p className="font-inter text-xs text-muted-foreground">
                   {flavor.description}
                 </p>
               </CardContent>
