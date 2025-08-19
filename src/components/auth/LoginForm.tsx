@@ -9,10 +9,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from './AuthProvider';
-import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, Loader2 } from 'lucide-react';
 
 const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email'),
+  email: z.string().email('Please enter a valid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
@@ -39,15 +39,29 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
   const onSubmit = async (values: LoginForm) => {
     setIsLoading(true);
     try {
+      console.log('Attempting to sign in with:', values.email);
       await signIn(values.email, values.password);
+      
       toast({
-        title: 'Welcome back!',
+        title: 'Welcome back! 🧁',
         description: 'You have been successfully signed in.',
       });
     } catch (error: any) {
+      console.error('Sign in error:', error);
+      
+      let errorMessage = 'Please check your credentials and try again.';
+      
+      if (error.message?.includes('Invalid login credentials')) {
+        errorMessage = 'Invalid email or password. Please check your credentials.';
+      } else if (error.message?.includes('Email not confirmed')) {
+        errorMessage = 'Please check your email and confirm your account first.';
+      } else if (error.message?.includes('Too many requests')) {
+        errorMessage = 'Too many login attempts. Please wait a moment and try again.';
+      }
+      
       toast({
         title: 'Sign in failed',
-        description: error.message || 'Please check your credentials and try again.',
+        description: errorMessage,
         variant: 'destructive',
       });
     } finally {
@@ -56,12 +70,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
   };
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold text-primary">Welcome Back</CardTitle>
-        <CardDescription>Sign in to your account to continue</CardDescription>
+    <Card className="w-full max-w-md mx-auto border-cupcake-pink/20 shadow-lg">
+      <CardHeader className="text-center pb-4">
+        <CardTitle className="text-2xl font-bold text-cupcake-pink">Welcome Back</CardTitle>
+        <CardDescription className="text-muted-foreground">
+          Sign in to your account to continue ordering delicious cupcakes
+        </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-6 pb-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -69,9 +85,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center gap-2">
-                    <Mail className="h-4 w-4" />
-                    Email
+                  <FormLabel className="flex items-center gap-2 text-sm font-medium">
+                    <Mail className="h-4 w-4 text-cupcake-pink" />
+                    Email Address
                   </FormLabel>
                   <FormControl>
                     <Input 
@@ -79,6 +95,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
                       placeholder="your@email.com" 
                       {...field}
                       disabled={isLoading}
+                      className="h-11 border-cupcake-pink/20 focus:border-cupcake-pink transition-colors"
                     />
                   </FormControl>
                   <FormMessage />
@@ -91,8 +108,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center gap-2">
-                    <Lock className="h-4 w-4" />
+                  <FormLabel className="flex items-center gap-2 text-sm font-medium">
+                    <Lock className="h-4 w-4 text-cupcake-pink" />
                     Password
                   </FormLabel>
                   <FormControl>
@@ -102,19 +119,21 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
                         placeholder="Enter your password"
                         {...field}
                         disabled={isLoading}
+                        className="h-11 pr-12 border-cupcake-pink/20 focus:border-cupcake-pink transition-colors"
                       />
                       <Button
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                        className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
                         onClick={() => setShowPassword(!showPassword)}
                         disabled={isLoading}
+                        tabIndex={-1}
                       >
                         {showPassword ? (
-                          <EyeOff className="h-4 w-4" />
+                          <EyeOff className="h-4 w-4 text-muted-foreground" />
                         ) : (
-                          <Eye className="h-4 w-4" />
+                          <Eye className="h-4 w-4 text-muted-foreground" />
                         )}
                       </Button>
                     </div>
@@ -128,10 +147,17 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
               type="submit"
               variant="hero"
               size="lg"
-              className="w-full"
+              className="w-full h-12 text-base font-semibold"
               disabled={isLoading}
             >
-              {isLoading ? 'Signing in...' : 'Sign In'}
+              {isLoading ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Signing in...
+                </>
+              ) : (
+                'Sign In'
+              )}
             </Button>
           </form>
         </Form>
@@ -140,11 +166,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
           <span className="text-muted-foreground">Don't have an account? </span>
           <Button
             variant="link"
-            className="p-0 h-auto font-semibold"
+            className="p-0 h-auto font-semibold text-cupcake-pink hover:text-cupcake-pink/80"
             onClick={onSwitchToSignup}
             disabled={isLoading}
           >
-            Sign up
+            Sign up here
           </Button>
         </div>
       </CardContent>
