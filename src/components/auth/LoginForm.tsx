@@ -12,7 +12,7 @@ import { useAuth } from './AuthProvider';
 import { Eye, EyeOff, Mail, Lock, Loader2 } from 'lucide-react';
 
 const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
+  email: z.string().min(1, 'Email is required'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
